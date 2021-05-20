@@ -1,8 +1,14 @@
 import React, { useEffect, useState } from "react";
 import PortfolioCard from "./PortfolioCard";
 import { getPortfolios } from "../../utils/api";
+import BarLoader from "react-bar-loader";
 
-const PortfolioContainer = ({}) => {
+const PortfolioContainer = ({
+  handleShow,
+  portfolioId,
+  selectedPortfolio,
+  setSelectedPortfolio,
+}) => {
   const [portfolios, setPortfolios] = useState([]);
   const [fetching, setFetching] = useState(true);
 
@@ -11,6 +17,9 @@ const PortfolioContainer = ({}) => {
       .then((res) => {
         setPortfolios(res.data);
         setFetching(false);
+        if (portfolioId && res.data.length) {
+          setSelectedPortfolio(res.data.find(p => p.id == portfolioId ))
+        }
       })
       .catch(() => {
         setPortfolios([]);
@@ -19,19 +28,37 @@ const PortfolioContainer = ({}) => {
   }, []);
 
   return (
-    <div class="bg-white">
+    <div class="bg-light">
       <div className="border-bottom d-flex justify-content-between">
         <h4 class="m-3">My Portfolios</h4>
         <div>
           {" "}
-          <button type="button" class="btn btn-warning m-2 font-weight-bold">New +</button>
+          <button
+            onClick={handleShow}
+            type="button"
+            class="btn btn-warning m-2 font-weight-bold"
+          >
+            New +
+          </button>
         </div>
       </div>
-      <div class="h-scroll">
-        {fetching ? "loading" : null}
-        {!fetching && portfolios.length
-          ? portfolios.map((p) => <PortfolioCard portfolio={p} />)
-          : "NONEEEEE"}
+      <div class="h-scroll man-h-85">
+        {fetching ? (
+          <div className="h-100 p-5 d-flex text-center flex-column justify-content-center align-content-center">
+            <div className="text-muted">Fetching your portfolios...</div>
+            <BarLoader />
+          </div>
+        ) : null}
+        {portfolios.length
+          ? portfolios.map((p) => (
+              <PortfolioCard
+                portfolio={p}
+                portfolioId={portfolioId}
+                selectedPortfolio={selectedPortfolio}
+                setSelectedPortfolio={setSelectedPortfolio}
+              />
+            ))
+          : null}
       </div>
     </div>
   );

@@ -43,10 +43,19 @@
 }
 
 .h-scroll {
-    height: 85vh;
     position: static;
     overflow-y: scroll;
 }
+
+.man-h-85{
+  height: 85vh;
+}
+.man-h-68{
+  height: 68vh;
+}
+
+.test{ position: sticky; top: 0; }
+
 
 .b-width {
   border-width:2px !important;
