@@ -21,7 +21,7 @@ const Performance = ({ selectedPortfolio, fetchingPerform }) => {
                 <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
               ) : (
                 <text className="font-weight-bold">
-                  ${formatMoney(selectedPortfolio.equity_investment)}
+                  {selectedPortfolio.portfolio_currency}{" "}{formatMoney(selectedPortfolio.equity_investment)}
                 </text>
               )}
             </td>
@@ -41,7 +41,7 @@ const Performance = ({ selectedPortfolio, fetchingPerform }) => {
                       : " text-danger")
                   }
                 >
-                  ${formatMoney(selectedPortfolio.equity_valuation)}
+                  {selectedPortfolio.portfolio_currency}{" "}{formatMoney(selectedPortfolio.equity_valuation)}
                 </text>
               )}
             </td>
@@ -68,7 +68,7 @@ const Performance = ({ selectedPortfolio, fetchingPerform }) => {
                 <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
               ) : (
                 <text className={"font-weight-bold" + (isProfitable(selectedPortfolio.equity_investment, selectedPortfolio.equity_valuation)? " text-success": " text-danger")}>
-                  $
+                  {selectedPortfolio.portfolio_currency} {" "}
                   {formatMoney(
                     selectedPortfolio.equity_valuation -
                       selectedPortfolio.equity_investment
@@ -82,7 +82,7 @@ const Performance = ({ selectedPortfolio, fetchingPerform }) => {
                 <FontAwesomeIcon icon={faSpinner} className="fa-spin" />
               ) : (
                 <text className={"font-weight-bold" + (isProfitable(0, selectedPortfolio.actualised_return)? " text-success": " text-danger")}>
-                  ${formatMoney(selectedPortfolio.actualised_return)}
+                  {selectedPortfolio.portfolio_currency} {" "}{formatMoney(selectedPortfolio.actualised_return)}
                 </text>
               )}
             </td>

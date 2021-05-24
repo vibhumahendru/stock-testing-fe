@@ -3,11 +3,14 @@ import Performance from "./Performance";
 import PositionsTable from "./PositionsTable";
 import NewPositionModal from "./NewPositionModal";
 
+
 const PortfolioDetailContainer = ({
   selectedTicker,
   selectedPortfolio,
   tickers,
-  setSelectedPortfolio
+  setSelectedPortfolio,
+  setPortfolios,
+  portfolios
 }) => {
   const [showPositionModal, setShowPositionModal] = useState(false);
   const [refetch, setRefetch] = useState(1);
@@ -17,7 +20,7 @@ const PortfolioDetailContainer = ({
     <>
       {selectedPortfolio ? (
         <>
-          <NewPositionModal
+          { showPositionModal ? <NewPositionModal
             showPositionModal={showPositionModal}
             tickers={tickers}
             setRefetch={setRefetch}
@@ -26,7 +29,9 @@ const PortfolioDetailContainer = ({
             selectedPortfolio={selectedPortfolio}
             setSelectedPortfolio={setSelectedPortfolio}
             setFetchingPerform={setFetchingPerform}
-          />
+            setPortfolios={setPortfolios}
+            portfolios={portfolios}
+          /> :null}
           <div className="border bg-white shadow">
             <h3 className="m-2 ml-3">{selectedPortfolio.name}</h3>
           </div>
@@ -40,7 +45,11 @@ const PortfolioDetailContainer = ({
             <PositionsTable
             refetch={refetch}
             selectedPortfolio={selectedPortfolio}
-            setShowPositionModal={setShowPositionModal} />
+            setFetchingPerform={setFetchingPerform}
+            setRefetch={setRefetch}
+            setShowPositionModal={setShowPositionModal}
+            setSelectedPortfolio={setSelectedPortfolio}
+             />
           </div>
         </>
       ) : null}

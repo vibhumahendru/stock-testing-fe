@@ -8,17 +8,18 @@ const PortfolioContainer = ({
   portfolioId,
   selectedPortfolio,
   setSelectedPortfolio,
+  portfolios,
+  setPortfolios,
+  fetching,
+  setFetching,
 }) => {
-  const [portfolios, setPortfolios] = useState([]);
-  const [fetching, setFetching] = useState(true);
-
   useEffect(() => {
     getPortfolios()
       .then((res) => {
         setPortfolios(res.data);
         setFetching(false);
         if (portfolioId && res.data.length) {
-          setSelectedPortfolio(res.data.find(p => p.id == portfolioId ))
+          setSelectedPortfolio(res.data.find((p) => p.id == portfolioId));
         }
       })
       .catch(() => {
@@ -54,11 +55,18 @@ const PortfolioContainer = ({
               <PortfolioCard
                 portfolio={p}
                 portfolioId={portfolioId}
+                setPortfolios={setPortfolios}
                 selectedPortfolio={selectedPortfolio}
                 setSelectedPortfolio={setSelectedPortfolio}
+                setFetching={setFetching}
               />
             ))
           : null}
+        {!fetching && !portfolios.length ? (
+          <div class="alert alert-warning" role="alert">
+          No portfolios created yet! 
+          </div>
+        ) : null}
       </div>
     </div>
   );

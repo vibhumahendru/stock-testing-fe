@@ -2,6 +2,7 @@ import React from "react";
 import { Form } from "react-bootstrap";
 import DateRangePicker from "react-bootstrap-daterangepicker";
 import "bootstrap-daterangepicker/daterangepicker.css";
+import moment from "moment";
 
 const HistoricalBuy = ({
   allowSell,
@@ -12,6 +13,7 @@ const HistoricalBuy = ({
   histPrices,
   histQuantity,
   setHistQuantity,
+  fetchingHistPrices,
 }) => {
   return (
     <table class="table">
@@ -21,25 +23,32 @@ const HistoricalBuy = ({
             <div className="d-flex  align-items-center">
               <div className="mr-2">Select Buy Date:</div>
               <div class="input-group w-50">
+                <input
+                  disabled={posTicker ? false : true}
+                  className="form-control"
+                  placeholder="--/--/--"
+                  value={date.start}
+                  readonly
+                />
                 <DateRangePicker
                   initialSettings={{
                     singleDatePicker: true,
                     autoApply: true,
+                    maxDate: moment(),
                   }}
-                  onCallback={(start, end, label) =>
-                    setDate({ ...date, start: start.format("YYYY-MM-DD") })
-                  }
+                  onCallback={(start, end, label) => {
+                    setDate({ start: "", end: "" });
+                    setDate({ ...date, start: start.format("YYYY-MM-DD") });
+                  }}
                 >
-                  <input
-                    disabled={posTicker ? false : true}
-                    className="form-control"
-                  />
+                  <div
+                    class={"input-group-append" + (posTicker ? "" : " pe-none")}
+                  >
+                    <span class="input-group-text">
+                      <i class="fa fa-calendar"></i>
+                    </span>
+                  </div>
                 </DateRangePicker>
-                <div class="input-group-append">
-                  <span class="input-group-text">
-                    <i class="fa fa-calendar"></i>
-                  </span>
-                </div>
               </div>
             </div>
           </td>
@@ -52,27 +61,39 @@ const HistoricalBuy = ({
                   onChange={(e) => setAllowSell(e.target.checked)}
                 />
               </Form>
-              <div className="mr-2">Select Sell Date:</div>
+              <div className="mr-2">Selsect Sell Date:</div>
               <div class="input-group w-50">
-                <DateRangePicker
-                  initialSettings={{
-                    singleDatePicker: true,
-                    autoApply: true,
-                  }}
-                  onCallback={(start, end, label) =>
-                    setDate({ ...date, end: end.format("YYYY-MM-DD") })
-                  }
-                >
-                  <input
-                    disabled={posTicker && allowSell ? false : true}
-                    className="form-control w-50"
-                  />
-                </DateRangePicker>
-                <div class="input-group-append">
-                  <span class="input-group-text">
-                    <i class="fa fa-calendar"></i>
-                  </span>
-                </div>
+                <input
+                  disabled={posTicker && allowSell ? false : true}
+                  className="form-control w-50"
+                  placeholder="--/--/--"
+                  value={date.end}
+                  readonly
+                />
+                {date.start ? (
+                  <DateRangePicker
+                    initialSettings={{
+                      singleDatePicker: true,
+                      autoApply: true,
+                      maxDate: moment(),
+                      minDate: `${moment(date.start).format("M/D/YYYY")}`,
+                    }}
+                    onCallback={(start, end, label) =>
+                      setDate({ ...date, end: end.format("YYYY-MM-DD") })
+                    }
+                  >
+                    <div
+                      class={
+                        "input-group-append" +
+                        (allowSell && posTicker ? "" : " pe-none")
+                      }
+                    >
+                      <span class="input-group-text">
+                        <i class="fa fa-calendar"></i>
+                      </span>
+                    </div>
+                  </DateRangePicker>
+                ) : null}
               </div>
             </div>
           </td>
@@ -80,20 +101,32 @@ const HistoricalBuy = ({
         <tr>
           <td>
             Buy price as of{" "}
-            {<text className="font-weight-bold ml-3">{date.start}</text>}
+            {<text className="font-weight-bold ml-3">{date.start ? moment(date.start).format("DD MMM YY"):null}</text>}
           </td>
           <td className="w-25 text-center">
-            {histPrices.buy ? `$${histPrices.buy.toFixed(2)}` : "-"}
+            {fetchingHistPrices ? (
+              <i class="fa fa-spinner fa-spin"></i>
+            ) : histPrices.buy ? (
+              `${posTicker ? posTicker.currency_symbol:null} ${histPrices.buy.toFixed(2)}`
+            ) : (
+              "-"
+            )}
           </td>
         </tr>
         {allowSell ? (
           <tr>
             <td>
               Sell price as of{" "}
-              {<text className="font-weight-bold ml-3">{date.end}</text>}
+              {<text className="font-weight-bold ml-3">{date.end ? moment(date.end).format("DD MMM YY"):null}</text>}
             </td>
             <td className="text-center">
-              {histPrices.sell ? `$${histPrices.sell.toFixed(2)}` : "-"}
+            {fetchingHistPrices ? (
+              <i class="fa fa-spinner fa-spin"></i>
+            ) : histPrices.sell ? (
+              `${posTicker ? posTicker.currency_symbol:null} ${histPrices.sell.toFixed(2)}`
+            ) : (
+              "-"
+            )}
             </td>
           </tr>
         ) : null}
@@ -114,7 +147,7 @@ const HistoricalBuy = ({
         <tr className="table-warning">
           <td>Total:</td>
           <td className="text-center">
-            ${(histQuantity * histPrices.buy).toFixed(2)}
+            {posTicker ? posTicker.currency_symbol:null}{" "}{(histQuantity * histPrices.buy).toFixed(2)}
           </td>
         </tr>
       </tbody>
