@@ -4,18 +4,18 @@ const MARKETSTACK_API_KEY='8c6e30c9297578771a66130e8cacba05'
 
 const prod = {
  url: {
-  API_URL: 'https://myapp.herokuapp.com',
+  API_URL: 'https://backtest-portfolio.herokuapp.com/',
   API_URL_USERS: 'https://myapp.herokuapp.com/users'}
 };
 const dev = {
  url: {
-  // API_URL: 'http://127.0.0.1:8000'
-  API_URL: 'https://backtest-portfolio.herokuapp.com/'
+  API_URL: 'http://127.0.0.1:8000'
  }
 };
 
-export const config = process.env.NODE_ENV === 'development' ? dev : prod;
+export const config = process.env.REACT_APP_DEV_ENV === 'dev' ? dev : prod;
 
+console.log(config)
 let token = localStorage.getItem('token')
 
 var axiosInstance = axios.create({
