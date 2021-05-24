@@ -30,7 +30,7 @@ const ChartContainer = ({
       <div className="d-flex align-items-center">
         <h3>{selectedTicker.name}</h3>
         <h5 className="ml-2 text-muted">{`(${selectedTicker.exchange})`}</h5>
-        <h5 className="ml-2 text-muted">{chartData.data && chartData.data.length ? `${chartData.data[chartData.data.length - 1].adj_close}`:null}</h5>
+        <h5 className="ml-2 text-muted">{chartData.data && chartData.data.length ? `${chartData.data[chartData.data.length - 1].adj_close} ${selectedTicker.currency_code}`:null}</h5>
       </div>
 
       {fetchingChartData ? (

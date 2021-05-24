@@ -31,7 +31,7 @@ const Header = () => {
     <ToastContainer/>
       <div className="vh-100 bg-light">
         <Navbar bg="dark text-warning" expand="lg" sticky="top">
-          <Navbar.Brand as={Link} to="/">
+          <Navbar.Brand as={Link} to="/portfolio-home">
           <div className="d-flex align-items-center">
             <h4 class="text-warning mr-2">Portfolio Testing</h4>
             <FontAwesomeIcon icon={faChartLine} size="lg" className="text-white" />

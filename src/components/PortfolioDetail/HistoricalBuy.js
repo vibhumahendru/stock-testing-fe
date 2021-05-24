@@ -61,7 +61,7 @@ const HistoricalBuy = ({
                   onChange={(e) => setAllowSell(e.target.checked)}
                 />
               </Form>
-              <div className="mr-2">Selsect Sell Date:</div>
+              <div className="mr-2">Select Sell Date:</div>
               <div class="input-group w-50">
                 <input
                   disabled={posTicker && allowSell ? false : true}
