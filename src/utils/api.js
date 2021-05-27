@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const MARKETSTACK_API_KEY='4b33601365acd225fa0e1270f5494cc2'
+const MARKETSTACK_API_KEY='649f45ef42f87675c8cb90a18baa39d2'
 
 const prod = {
  url: {
@@ -15,7 +15,7 @@ const dev = {
 
 export const config = process.env.REACT_APP_DEV_ENV === 'dev' ? dev : prod;
 
-console.log(config)
+
 let token = localStorage.getItem('token')
 
 var axiosInstance = axios.create({
