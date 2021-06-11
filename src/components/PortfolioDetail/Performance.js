@@ -87,8 +87,13 @@ const Performance = ({ selectedPortfolio, fetchingPerform }) => {
               )}
             </td>
             <td>
-              <text className="mr-2"></text>
-              <text></text>
+              <text className="mr-2">{selectedPortfolio.portfolio_currency == "Rs" ? "Nifty Comparison" : null}</text>
+              { selectedPortfolio.portfolio_currency == "Rs" ?
+                <text className={"font-weight-bold" + ( selectedPortfolio.nifty_comparison > 0 ? " text-success": " text-danger")}>
+              <FontAwesomeIcon className="mr-1" icon={selectedPortfolio.nifty_comparison > 0 ? faArrowUp:faArrowDown} />
+              {selectedPortfolio.nifty_comparison}%
+              </text> :null
+            }
             </td>
           </tr>
         </tbody>
