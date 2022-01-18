@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const MARKETSTACK_API_KEY='21c9cf0550046f3baab4082885ff344f'
+const MARKETSTACK_API_KEY='82dda165382877b6fc1ace62666e34ab'
 
 const prod = {
  url: {
